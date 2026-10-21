@@ -1,14 +1,11 @@
 openapi: 3.0.3
 info:
   title: Domain User Management API
-  version: 1.0.0
-  contact:
-    name: Firefly Software Foundation
-    email: dev@fireflysoftware.io
+  version: 26.10.4
 paths:
   /api/v1/accounts/{id}:
     get:
-      tags: [UserAccount]
+      tags: [User Accounts]
       operationId: read
       parameters:
         - name: id
@@ -17,13 +14,13 @@ paths:
           schema: {type: string, format: uuid}
       responses:
         "200":
-          description: Found
+          description: User account
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RecordView"
+                $ref: "#/components/schemas/UserAccountView"
     put:
-      tags: [UserAccount]
+      tags: [User Accounts]
       operationId: update
       parameters:
         - name: id
@@ -35,37 +32,34 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RecordView"
+              $ref: "#/components/schemas/UserAccountDraft"
       responses:
         "200":
           description: Updated
-    delete:
-      tags: [UserAccount]
-      operationId: remove
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: {type: string, format: uuid}
-      responses:
-        "204":
-          description: Removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StoredUserAccount"
   /api/v1/accounts:
     post:
-      tags: [UserAccount]
+      tags: [User Accounts]
       operationId: create
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RecordView"
+              $ref: "#/components/schemas/UserAccountDraft"
       responses:
-        "201":
-          description: Created
+        "200":
+          description: Registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StoredUserAccount"
 components:
   schemas:
-    RecordView:
+    UserAccountView:
       type: object
       properties:
         id:
@@ -73,3 +67,14 @@ components:
           format: uuid
         label:
           type: string
+    UserAccountDraft:
+      type: object
+      additionalProperties: true
+    StoredUserAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        body:
+          $ref: "#/components/schemas/UserAccountDraft"
