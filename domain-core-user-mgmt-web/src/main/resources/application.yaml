@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: domain-core-user-mgmt
+server:
+  port: ${SERVER_PORT:18126}
+firefly:
+  user:
+    account:
+      adapter: sandbox
+      core-base-url: http://localhost:8080
