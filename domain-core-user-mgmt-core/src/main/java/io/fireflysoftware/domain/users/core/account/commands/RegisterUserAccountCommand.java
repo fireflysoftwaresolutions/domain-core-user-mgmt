@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Firefly Software Foundation
+ * Copyright 2026 Firefly Software Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package io.fireflysoftware.domain.users;
+package io.fireflysoftware.domain.users.core.account.commands;
 
-import reactor.core.publisher.Mono;
+import io.fireflysoftware.core.users.sdk.model.UserAccountDTO;
+import io.fireflysoftware.domain.users.core.account.StoredUserAccount;
+import org.fireflyframework.cqrs.command.Command;
 
-import java.util.UUID;
-
-/** Reads the core through its SDK when the live adapter is selected. Sandbox does not open a socket. */
-public interface CorePort {
-    Mono<UserAccountView> read(UUID id);
+public record RegisterUserAccountCommand(UserAccountDTO draft) implements Command<StoredUserAccount> {
 }

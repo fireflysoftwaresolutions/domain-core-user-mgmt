@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Firefly Software Foundation
+ * Copyright 2026 Firefly Software Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package io.fireflysoftware.domain.users;
+package io.fireflysoftware.domain.users.core.account;
 
-import org.springframework.beans.factory.annotation.Value;
+import io.fireflysoftware.core.users.sdk.api.UserAccountsApi;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AdapterConfiguration {
+public class UserAccountAdapterConfiguration {
     @Bean
     @ConditionalOnProperty(prefix = "firefly.user.account", name = "adapter", havingValue = "sandbox", matchIfMissing = true)
-    public CorePort sandboxPort() {
-        return new SandboxAdapter();
+    public UserAccountPort sandboxUserAccountPort() {
+        return new SandboxUserAccountAdapter();
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "firefly.user.account", name = "adapter", havingValue = "core")
-    public CorePort corePort(
-            @Value("${firefly.user.account.core-base-url:http://localhost:8080}") String basePath) {
-        return new SdkAdapter(basePath);
+    public UserAccountPort coreUserAccountPort(UserAccountsApi api) {
+        return new SdkUserAccountAdapter(api);
     }
 }

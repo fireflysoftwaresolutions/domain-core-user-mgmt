@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Firefly Software Foundation
+ * Copyright 2026 Firefly Software Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fireflysoftware.domain.users;
+package io.fireflysoftware.domain.users.core.account;
 
 import io.fireflysoftware.core.users.sdk.api.UserAccountsApi;
 import io.fireflysoftware.core.users.sdk.model.UserAccountDTO;
@@ -29,14 +29,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class SdkAdapterTest {
+class SdkUserAccountAdapterTest {
     @Test
     void sandboxIsTheDefaultAndDoesNotOpenASocket() {
         new ApplicationContextRunner()
-                .withUserConfiguration(AdapterConfiguration.class)
+                .withUserConfiguration(UserAccountAdapterConfiguration.class)
                 .run(context -> {
-                    CorePort port = context.getBean(CorePort.class);
-                    assertThat(port).isInstanceOf(SandboxAdapter.class);
+                    UserAccountPort port = context.getBean(UserAccountPort.class);
+                    assertThat(port).isInstanceOf(SandboxUserAccountAdapter.class);
                     assertThat(port.read(null).block().label()).isEqualTo("sample@example.com");
                 });
     }
@@ -44,9 +44,9 @@ class SdkAdapterTest {
     @Test
     void corePropertySelectsTheSdkAdapter() {
         new ApplicationContextRunner()
-                .withUserConfiguration(AdapterConfiguration.class)
+                .withUserConfiguration(UserAccountAdapterConfiguration.class, io.fireflysoftware.domain.users.infra.UserAccountClientFactory.class)
                 .withPropertyValues("firefly.user.account.adapter=core")
-                .run(context -> assertThat(context.getBean(CorePort.class)).isInstanceOf(SdkAdapter.class));
+                .run(context -> assertThat(context.getBean(UserAccountPort.class)).isInstanceOf(SdkUserAccountAdapter.class));
     }
 
     @Test
@@ -56,7 +56,7 @@ class SdkAdapterTest {
         UserAccountDTO dto = mock(UserAccountDTO.class);
         when(dto.getId()).thenReturn(id);
         when(api.getUserAccountById(id, null)).thenReturn(Mono.just(dto));
-        UserAccountView view = new SdkAdapter(api).read(id).block();
+        UserAccountView view = new SdkUserAccountAdapter(api).read(id).block();
         assertThat(view.id()).isEqualTo(id);
         verify(api).getUserAccountById(id, null);
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Firefly Software Foundation
+ * Copyright 2026 Firefly Software Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package io.fireflysoftware.domain.users;
+package io.fireflysoftware.domain.users.core.account.commands;
 
-import reactor.core.publisher.Mono;
+import io.fireflysoftware.core.users.sdk.model.UserAccountDTO;
+import io.fireflysoftware.domain.users.core.account.StoredUserAccount;
+import org.fireflyframework.cqrs.command.Command;
 
 import java.util.UUID;
 
-/** Default adapter. Returns one sample row and does not call the core. */
-public final class SandboxAdapter implements CorePort {
-    @Override
-    public Mono<UserAccountView> read(UUID id) {
-        UUID resolved = id == null ? UUID.fromString("00000000-0000-4000-8000-000000000001") : id;
-        return Mono.just(new UserAccountView(resolved, "sample@example.com"));
-    }
+public record UpdateUserAccountCommand(UUID id, UserAccountDTO draft) implements Command<StoredUserAccount> {
 }
