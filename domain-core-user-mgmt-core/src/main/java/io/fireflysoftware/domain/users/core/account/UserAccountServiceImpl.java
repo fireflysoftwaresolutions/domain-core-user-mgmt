@@ -30,12 +30,12 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
-@Service
-public class UserAccountService {
+@Service("userAccountService")
+public class UserAccountServiceImpl {
     private final SagaEngine engine;
     private final UserAccountPort port;
 
-    public UserAccountService(SagaEngine engine, UserAccountPort port) {
+    public UserAccountServiceImpl(SagaEngine engine, UserAccountPort port) {
         this.engine = engine;
         this.port = port;
     }

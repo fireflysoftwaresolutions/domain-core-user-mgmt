@@ -23,10 +23,10 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 /** Live adapter. Selected with firefly.user.account.adapter=core. */
-public final class SdkUserAccountAdapter implements UserAccountPort {
+public final class SdkUserAccountAdapterImpl implements UserAccountPort {
     private final UserAccountsApi api;
 
-    public SdkUserAccountAdapter(UserAccountsApi api) {
+    public SdkUserAccountAdapterImpl(UserAccountsApi api) {
         this.api = api;
     }
 

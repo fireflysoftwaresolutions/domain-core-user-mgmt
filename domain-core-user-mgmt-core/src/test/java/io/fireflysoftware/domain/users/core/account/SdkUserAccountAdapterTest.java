@@ -36,7 +36,7 @@ class SdkUserAccountAdapterTest {
                 .withUserConfiguration(UserAccountAdapterConfiguration.class)
                 .run(context -> {
                     UserAccountPort port = context.getBean(UserAccountPort.class);
-                    assertThat(port).isInstanceOf(SandboxUserAccountAdapter.class);
+                    assertThat(port).isInstanceOf(SandboxUserAccountAdapterImpl.class);
                     assertThat(port.read(null).block().label()).isEqualTo("sample@example.com");
                 });
     }
@@ -46,7 +46,7 @@ class SdkUserAccountAdapterTest {
         new ApplicationContextRunner()
                 .withUserConfiguration(UserAccountAdapterConfiguration.class, io.fireflysoftware.domain.users.infra.UserAccountClientFactory.class)
                 .withPropertyValues("firefly.user.account.adapter=core")
-                .run(context -> assertThat(context.getBean(UserAccountPort.class)).isInstanceOf(SdkUserAccountAdapter.class));
+                .run(context -> assertThat(context.getBean(UserAccountPort.class)).isInstanceOf(SdkUserAccountAdapterImpl.class));
     }
 
     @Test
@@ -56,7 +56,7 @@ class SdkUserAccountAdapterTest {
         UserAccountDTO dto = mock(UserAccountDTO.class);
         when(dto.getId()).thenReturn(id);
         when(api.getUserAccountById(id, null)).thenReturn(Mono.just(dto));
-        UserAccountView view = new SdkUserAccountAdapter(api).read(id).block();
+        UserAccountView view = new SdkUserAccountAdapterImpl(api).read(id).block();
         assertThat(view.id()).isEqualTo(id);
         verify(api).getUserAccountById(id, null);
     }

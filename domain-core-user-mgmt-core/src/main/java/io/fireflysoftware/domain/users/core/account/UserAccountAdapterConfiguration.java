@@ -26,12 +26,12 @@ public class UserAccountAdapterConfiguration {
     @Bean
     @ConditionalOnProperty(prefix = "firefly.user.account", name = "adapter", havingValue = "sandbox", matchIfMissing = true)
     public UserAccountPort sandboxUserAccountPort() {
-        return new SandboxUserAccountAdapter();
+        return new SandboxUserAccountAdapterImpl();
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "firefly.user.account", name = "adapter", havingValue = "core")
     public UserAccountPort coreUserAccountPort(UserAccountsApi api) {
-        return new SdkUserAccountAdapter(api);
+        return new SdkUserAccountAdapterImpl(api);
     }
 }
