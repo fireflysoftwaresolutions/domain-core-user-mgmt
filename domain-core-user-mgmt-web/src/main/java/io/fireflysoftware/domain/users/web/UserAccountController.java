@@ -17,7 +17,7 @@
 package io.fireflysoftware.domain.users.web;
 
 import io.fireflysoftware.core.users.sdk.model.UserAccountDTO;
-import io.fireflysoftware.domain.users.core.account.UserAccountService;
+import io.fireflysoftware.domain.users.core.account.UserAccountServiceImpl;
 import io.fireflysoftware.domain.users.core.account.UserAccountView;
 import io.fireflysoftware.domain.users.core.account.StoredUserAccount;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,9 +34,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/accounts")
 public class UserAccountController {
-    private final UserAccountService service;
+    private final UserAccountServiceImpl service;
 
-    public UserAccountController(UserAccountService service) {
+    public UserAccountController(UserAccountServiceImpl service) {
         this.service = service;
     }
 

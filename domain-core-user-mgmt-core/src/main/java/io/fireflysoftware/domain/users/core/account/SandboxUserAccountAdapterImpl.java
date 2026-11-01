@@ -23,7 +23,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /** Default adapter. Holds rows in memory and does not call the core. */
-public final class SandboxUserAccountAdapter implements UserAccountPort {
+public final class SandboxUserAccountAdapterImpl implements UserAccountPort {
     private final ConcurrentHashMap<UUID, UserAccountDTO> rows = new ConcurrentHashMap<>();
 
     @Override
